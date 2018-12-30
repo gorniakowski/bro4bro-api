@@ -2,6 +2,7 @@ const express = require('express');
 const app = express ();
 const knex = require('knex');
 const cors = require ('cors');
+const passport = require('passport');
 
 app.use(cors());
 
