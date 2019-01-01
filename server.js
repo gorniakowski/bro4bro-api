@@ -1,24 +1,16 @@
 const express = require('express');
 const app = express ();
-const knex = require('knex');
 const cors = require ('cors');
 const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
 const bodyParser = require('body-parser');
+const User = require ('./models/User');
+const db = require('./models/Database');
 
 
 passport.use(new Strategy(
     function(username, password, cb){
-        db.select('email', 'hash').from('login')
-        .where('email','=', username)
-        .then(data =>{
-            if (data[0].hash === password){
-                return cb(null, 'SOme user data from user table')
-            }else {
-                return cb(null, false)
-            }
-        })
-        .catch(err =>  cb(err))
+        
    
     }
 ))
@@ -42,17 +34,6 @@ app.use(passport.session());
 
 
 
-const db = knex ({
-    client: 'pg',
-    connection: {
-        host: '127.0.0.1',
-        user: 'gorniak',
-        password: '',
-        database: 'bro4bro'
-
-    }
-})
-
 
 app.get('/', (req, res) =>{
     db.select('time').from('lastbro')
@@ -72,7 +53,21 @@ app.post('/login',
     res.status(200).send('logged in!');
   });
 
-app.listen (3000, () =>{
+
+app.post ('/register', (req, res) =>{
+    const {name, email, password} = req.body;
+    try {
+        User.Register(name, email, password);
+        res.status(200);
+    }
+    catch(err) {
+        res.status(400).json(err);
+    }
+})
+
+
+
+app.listen (3001, () =>{
     console.log('App running on port 3000')
 })
 
