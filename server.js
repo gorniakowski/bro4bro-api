@@ -56,18 +56,23 @@ app.post('/login',
 
 app.post ('/register', (req, res) =>{
     const {name, email, password} = req.body;
-    try {
-        User.Register(name, email, password);
-        res.status(200);
+    tryRegister();
+    async function tryRegister() {
+    var  result =  await User.Register(name, email, password);
+    console.log (result)
+    //if (result[0] === false) {
+     //   res.status(400).json(result[1])
+   // }
+    
     }
-    catch(err) {
-        res.status(400).json(err);
-    }
+
+
+  
 })
 
 
 
-app.listen (3001, () =>{
+app.listen (3000, () =>{
     console.log('App running on port 3000')
 })
 

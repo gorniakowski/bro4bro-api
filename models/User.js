@@ -15,16 +15,16 @@ module.exports.passwordCheck = function (email, password) {
 
 }
 
-module.exports.Register = function(name, email, password) {
+module.exports.Register =  function(name, email, password) {
     const hash = bcrypt.hashSync(password);
     if (!validateEmail(email)){
-        throw 'Wrong email'
+        return [false, 'Email not correct']
     }
     if(name.length === 0) {
-        throw 'Must provide name'
+        return [false, 'Must provide name']
     }
     if (password.length === 0) {
-        throw 'Password too short'
+        return [false, 'Password too short']
     }
     db.transaction(trx => {
         trx.insert({
@@ -32,10 +32,32 @@ module.exports.Register = function(name, email, password) {
             email: email
         })
         .into('login')
+        .returning('email')
+        .then(loginEmail => {
+            return trx('users')
+            .returning('*')        
+            .insert({
+                email: loginEmail[0],
+                name: name,
+                joined: new Date()
+            })
+            .then(user =>{
+                res.json(user[0]);
+            })
+
+        })
         .then(trx.commit)
         .catch(trx.rollback)
     })
-    .catch(err => console.log(err))
+    .catch(function(err){
+         console.log(err);
+    })
+    
+        
+    
+    
+
+    
    
 
 }
