@@ -9,7 +9,20 @@ const db = require('./models/Database');
 
 
 passport.use(new Strategy(
-    function(username, password, cb){
+    function(email, password, cb){
+        if (!User.validateEmail(email)){
+          return cb(null, false)
+        }
+        if (password.length === 0){
+          return cb(null, false)
+        }
+
+        if (!User.loginCheck(email, password)){
+          return cb(null, false)
+        }
+
+        return cb(null, {user: 'i am a user object'})
+        
         
    
     }
@@ -55,18 +68,13 @@ app.post('/login',
 
 
 app.post ('/register', (req, res) =>{
-    const {name, email, password} = req.body;
-    tryRegister();
-    async function tryRegister() {
-    var  result =  await User.Register(name, email, password);
-    console.log (result)
-    //if (result[0] === false) {
-     //   res.status(400).json(result[1])
-   // }
     
-    }
-
-
+    const {name, email, password} = req.body;
+    User.Register(name, email, password)
+    .then(valu => res.status(200).json(valu))
+    .catch(err =>{
+      console.log(err)
+      res.status(400).json(err)} )
   
 })
 
