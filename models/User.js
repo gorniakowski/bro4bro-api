@@ -2,14 +2,17 @@ const bcrypt = require('bcrypt-nodejs');
 const db = require('./Database')
 
 module.exports.loginCheck = function(email, password) {
-     return db.select('email', 'hash')
+    return new Promise(resolve => {
+    db.select('email', 'hash')
     .from('login')
     .where('email', '=', email)
     .then(data => {
         bcrypt.compareSync(password, data[0].hash);
         
     })
-    .catch(err => console.log(err))
+    
+
+})
 
    
         
@@ -54,7 +57,7 @@ module.exports.Register =  function(name, email, password) {
         
             
             .catch(err => {
-                console.log(err);
+                console.log('ups'+err);
                 reject('Shit!. Unable to register');
             }
             )

@@ -9,7 +9,7 @@ const db = require('./models/Database');
 
 
 passport.use(new Strategy(
-    function(email, password, cb){
+    async function(email, password, cb){
         if (!User.validateEmail(email)){
           return cb(null, false)
         }
@@ -17,7 +17,7 @@ passport.use(new Strategy(
           return cb(null, false)
         }
 
-        if (!User.loginCheck(email, password)){
+        if (await !User.loginCheck(email, password)){
           return cb(null, false)
         }
 
