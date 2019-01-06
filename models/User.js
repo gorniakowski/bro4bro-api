@@ -7,14 +7,24 @@ module.exports.loginCheck = function(email, password) {
     .from('login')
     .where('email', '=', email)
     .then(data => {
-        bcrypt.compareSync(password, data[0].hash);
+        resolve (bcrypt.compareSync(password, data[0].hash));
         
     })
+    
     
 
 })
 
-   
+
+module.exports.getUser = function(email, callback) {
+    db.select('*')
+    .from('users')
+    .where('email', '=', email)
+    .then(user => {
+        callback(user)
+    })
+    .catch(err => console.log(err))
+}
         
        
 }
