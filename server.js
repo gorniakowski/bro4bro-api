@@ -22,8 +22,9 @@ passport.use(new Strategy(
             return cb(null, false)
 
           } else {
-
-            return cb(null, {user: 'i am a user object'})
+            User.getUser(email).then(data => {
+              return cb(null, data[0])
+            })
 
           }
         })             
@@ -33,12 +34,15 @@ passport.use(new Strategy(
 
 // serialize user object
 passport.serializeUser(function (user, done) {
-  done(null, user);
+  done(null, user.id);
 });
 
 // deserialize user object
 passport.deserializeUser(function (user, done) {
-  done(err, user);
+  
+    User.getUserById(user.id).then(data => {
+      done(err, data)
+    })
 });
 
 
@@ -66,7 +70,7 @@ app.post('/login',
 
   // function to call once successfully authenticated
   function (req, res) {
-    res.status(200).send(res.json(user));
+    res.status(200).send(req.user);
   });
 
 

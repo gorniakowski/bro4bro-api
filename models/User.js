@@ -7,27 +7,36 @@ module.exports.loginCheck = function(email, password) {
     .from('login')
     .where('email', '=', email)
     .then(data => {
-        resolve (bcrypt.compareSync(password, data[0].hash));
+            resolve (bcrypt.compareSync(password, data[0].hash));
         
+        })
+    
+    
+
     })
-    
-    
-
-})
+}
 
 
-module.exports.getUser = function(email, callback) {
-    db.select('*')
+module.exports.getUser = function(email) {
+    return  db.select('*')
     .from('users')
     .where('email', '=', email)
-    .then(user => {
-        callback(user)
-    })
+    
+
     .catch(err => console.log(err))
+}
+
+module.exports.getUserById = function(id){
+    return db.select('*')
+    .from('users')
+    .where('id', '=', id)
+    
+    .catch(err => console.log(err))
+
 }
         
        
-}
+
 
 module.exports.Register =  function(name, email, password) {
     return new Promise((resolve, reject) => {
