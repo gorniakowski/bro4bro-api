@@ -6,6 +6,7 @@ const Strategy = require('passport-local').Strategy;
 const bodyParser = require('body-parser');
 const User = require ('./models/User');
 const db = require('./models/Database');
+const session = require('express-session');
 
 
 passport.use(new Strategy(
@@ -49,6 +50,9 @@ passport.deserializeUser(function (user, done) {
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(session({ secret: 'kotek',
+                  resave: false
+                }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -78,7 +82,9 @@ app.post ('/register', (req, res) =>{
     
     const {name, email, password} = req.body;
     User.Register(name, email, password)
-    .then(valu => res.status(200).json(valu))
+    .then(valu => res.status(200).json(valu[0]))
+  
+    
     .catch(err =>{
       console.log(err)
       res.status(400).json(err)} )
