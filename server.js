@@ -9,6 +9,9 @@ const db = require('./models/Database');
 const session = require('express-session');
 
 
+
+
+
 passport.use(new Strategy(
      function(email, password, cb){
         if (!User.validateEmail(email)){
@@ -39,9 +42,8 @@ passport.serializeUser(function (user, done) {
 });
 
 // deserialize user object
-passport.deserializeUser(function (user, done) {
-  
-    User.getUserById(user.id).then(data => {
+passport.deserializeUser(function (id, done) {
+    User.getUserById(id).then((data, err) => {
       done(err, data)
     })
 });
@@ -67,15 +69,17 @@ app.get('/', (req, res) =>{
     
 })
 
-app.post('/login',
+
+
+ app.post('/login',
   // call passport authentication passing the "local" strategy name
   // THIS CALL RESPONDS WITH 400 OR 401 STATUS WITH NO DETAILS
   passport.authenticate('local'),
 
   // function to call once successfully authenticated
   function (req, res) {
-    res.status(200).send(req.user);
-  });
+    res.status(200).json(req.user);
+  }); 
 
 
 app.post ('/register', (req, res) =>{

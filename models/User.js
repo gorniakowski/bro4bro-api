@@ -31,7 +31,7 @@ module.exports.getUserById = function(id){
     .from('users')
     .where('id', '=', id)
     
-    .catch(err => console.log(err))
+    .catch(err => err)
 
 }
         
