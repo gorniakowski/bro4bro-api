@@ -53,7 +53,8 @@ passport.deserializeUser(function (id, done) {
 app.use(cors());
 app.use(bodyParser.json());
 app.use(session({ secret: 'kotek',
-                  resave: false
+                  resave: false,
+                  saveUninitialized: true
                 }));
 app.use(passport.initialize());
 app.use(passport.session());
