@@ -6,7 +6,7 @@ const Strategy = require('passport-local').Strategy;
 const bodyParser = require('body-parser');
 const User = require ('./models/User');
 const db = require('./models/Database');
-const session = require('express-session');
+const session = require('express-session'); 
 
 
 
@@ -79,6 +79,8 @@ app.get('/', (req, res) =>{
 
   // function to call once successfully authenticated
   function (req, res) {
+    req.session.save();
+    req.session.user = req.user;
     res.status(200).json(req.user);
   }); 
 
@@ -94,6 +96,11 @@ app.post ('/register', (req, res) =>{
       console.log(err)
       res.status(400).json(err)} )
   
+})
+
+app.post('/ready4bro', (req, res) =>{
+  console.log(req.session.id)
+  res.status(200)
 })
 
 
