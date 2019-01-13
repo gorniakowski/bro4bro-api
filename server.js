@@ -9,6 +9,10 @@ const db = require('./models/Database');
 const session = require('express-session'); 
 
 
+const corsOptions = {
+  origin: 'http://localhost:3001', //the port my react app is running on.
+  credentials: true,
+};
 
 
 
@@ -50,11 +54,12 @@ passport.deserializeUser(function (id, done) {
 
 
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(session({ secret: 'kotek',
                   resave: false,
-                  saveUninitialized: true
+                  saveUninitialized: true,
+                  cookie: {maxAge:  3600000000}
                 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -79,7 +84,7 @@ app.get('/', (req, res) =>{
 
   // function to call once successfully authenticated
   function (req, res) {
-    req.session.save();
+    console.log(req.sessionID)
     req.session.user = req.user;
     res.status(200).json(req.user);
   }); 
@@ -99,7 +104,7 @@ app.post ('/register', (req, res) =>{
 })
 
 app.post('/ready4bro', (req, res) =>{
-  console.log(req.session.id)
+  console.log(req.sessionID)
   res.status(200)
 })
 
