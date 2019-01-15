@@ -53,14 +53,15 @@ passport.deserializeUser(function (id, done) {
 });
 
 
-
-app.use(cors(corsOptions));
-app.use(bodyParser.json());
 app.use(session({ secret: 'kotek',
                   resave: false,
                   saveUninitialized: true,
-                  cookie: {maxAge:  3600000000}
+                  cookie: {maxAge:  3600000000,
+                          secure: false}
                 }));
+
+app.use(cors(corsOptions));
+app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -104,10 +105,21 @@ app.post ('/register', (req, res) =>{
 })
 
 app.post('/ready4bro', (req, res) =>{
-  console.log(req.sessionID)
-  res.status(200)
+  User.setBroReady(req.session.user.id)
+  .then(result => {
+    console.log(result);
+    if (result === 1) {
+      res.status(200).json('ok')
+    }else {
+      res.status(400).json('Somthing is wrong ? help me !')
+    }
+  })
+  
 })
 
+app.post('/logout', (req, res) => {
+  req.session.destroy();
+})
 
 
 app.listen (3000, () =>{

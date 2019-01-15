@@ -34,6 +34,12 @@ module.exports.getUserById = function(id){
     .catch(err => err)
 
 }
+
+module.exports.setBroReady = function(id){
+    return db('users')
+    .where('id', '=', id)
+    .update({ready4bro: true})
+}
         
        
 
