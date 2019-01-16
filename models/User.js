@@ -41,7 +41,7 @@ module.exports.setBroReady = function(id){
     .update({ready4bro: true})
 }
         
-       
+
 
 
 module.exports.Register =  function(name, email, password) {

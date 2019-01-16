@@ -5,7 +5,7 @@ const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
 const bodyParser = require('body-parser');
 const User = require ('./models/User');
-const db = require('./models/Database');
+const database = require('./models/Database');
 const session = require('express-session'); 
 
 
@@ -69,7 +69,7 @@ app.use(passport.session());
 
 
 app.get('/', (req, res) =>{
-    db.select('time').from('lastbro')
+    database.select('time').from('lastbro')
     .then(time => res.status(200).json(time))
     .catch(err => res.status(400).json('Unable to receive timestamp ' + err))
 
@@ -85,9 +85,15 @@ app.get('/', (req, res) =>{
 
   // function to call once successfully authenticated
   function (req, res) {
-    console.log(req.sessionID)
     req.session.user = req.user;
-    res.status(200).json(req.user);
+    database.getAllReady4Bro()
+    .then (result=>{ 
+      const data = {
+        user: req.user,
+        broReady: result
+      }
+      res.status(200).json(data)})
+    
   }); 
 
 

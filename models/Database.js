@@ -11,4 +11,11 @@ const db = knex ({
     }
 })
 
+
 module.exports = db
+
+module.exports.getAllReady4Bro = async function () {
+
+    return await db.select('name').from('users')
+    .where('ready4bro','=', true)
+}       
