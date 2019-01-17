@@ -2,12 +2,17 @@ const bcrypt = require('bcrypt-nodejs');
 const db = require('./Database')
 
 module.exports.loginCheck = function(email, password) {
+   
     return new Promise(resolve => {
     db.select('email', 'hash')
     .from('login')
     .where('email', '=', email)
     .then(data => {
-            resolve (bcrypt.compareSync(password, data[0].hash));
+            if (data.length !== 0){
+                resolve (bcrypt.compareSync(password, data[0].hash));
+            }else{
+                null
+            }
         
         })
     

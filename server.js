@@ -123,6 +123,12 @@ app.post('/ready4bro', (req, res) =>{
   
 })
 
+app.post('/clockreset', (req, res) => {
+
+  console.log(req.user)
+
+})
+
 app.post('/logout', (req, res) => {
   req.session.destroy();
 })
