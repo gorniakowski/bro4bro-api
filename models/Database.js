@@ -18,4 +18,10 @@ module.exports.getAllReady4Bro = async function () {
 
     return await db.select('name').from('users')
     .where('ready4bro','=', true)
-}       
+} 
+
+module.exports.clockReset = function () {
+    return db('lastbro')
+            .update({time: db.fn.now()})
+
+}

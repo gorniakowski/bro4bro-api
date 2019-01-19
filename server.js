@@ -124,8 +124,9 @@ app.post('/ready4bro', (req, res) =>{
 })
 
 app.post('/clockreset', (req, res) => {
+    database.clockReset().then(result=>console.log(result))
 
-  console.log(req.user)
+  
 
 })
 
