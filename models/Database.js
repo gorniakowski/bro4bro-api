@@ -23,5 +23,6 @@ module.exports.getAllReady4Bro = async function () {
 module.exports.clockReset = function () {
     return db('lastbro')
             .update({time: db.fn.now()})
+            
 
 }

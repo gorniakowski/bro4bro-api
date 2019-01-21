@@ -124,7 +124,17 @@ app.post('/ready4bro', (req, res) =>{
 })
 
 app.post('/clockreset', (req, res) => {
-    database.clockReset().then(result=>console.log(result))
+    if(req.user){
+      database.clockReset()
+      .then(result => {
+        if (result ===1){
+          res.status(200).json('OK')
+        }else {
+          res.status(400).json('could not do')
+        }
+      })
+      .catch(err => res.status(500).json(err))
+    }
 
   
 
