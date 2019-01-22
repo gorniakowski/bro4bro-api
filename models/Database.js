@@ -21,8 +21,25 @@ module.exports.getAllReady4Bro = async function () {
 } 
 
 module.exports.clockReset = function () {
+    
+    db.transaction(trx => {
+        trx.update({time:db.fn.now()})
+        .into('lastbro')
+        
+        trx.select('*')
+            .from('users')
+            .where('ready4bro','=', true)
+            .update({ready4bro: false})
+        .then(trx.commit)
+        .catch(trx.rollback)   
+    })
+    
+
+
     return db('lastbro')
+
             .update({time: db.fn.now()})
-            
+
+
 
 }

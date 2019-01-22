@@ -113,7 +113,6 @@ app.post ('/register', (req, res) =>{
 app.post('/ready4bro', (req, res) =>{
   User.setBroReady(req.session.user.id)
   .then(result => {
-    console.log(result);
     if (result === 1) {
       res.status(200).json('ok')
     }else {
@@ -127,13 +126,14 @@ app.post('/clockreset', (req, res) => {
     if(req.user){
       database.clockReset()
       .then(result => {
+       // console.log(result)
         if (result ===1){
           res.status(200).json('OK')
         }else {
           res.status(400).json('could not do')
         }
       })
-      .catch(err => res.status(500).json(err))
+      .catch(err => res.status(500).json('welp'))
     }
 
   
@@ -142,6 +142,7 @@ app.post('/clockreset', (req, res) => {
 
 app.post('/logout', (req, res) => {
   req.session.destroy();
+  res.status(200).json('OK')
 })
 
 
