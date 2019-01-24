@@ -1,0 +1,231 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.5
+-- Dumped by pg_dump version 10.5
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: lastbro; Type: TABLE; Schema: public; Owner: gorniak
+--
+
+CREATE TABLE public.lastbro (
+    "time" timestamp without time zone
+);
+
+
+ALTER TABLE public.lastbro OWNER TO gorniak;
+
+--
+-- Name: login; Type: TABLE; Schema: public; Owner: gorniak
+--
+
+CREATE TABLE public.login (
+    id integer NOT NULL,
+    hash character varying(100) NOT NULL,
+    email text NOT NULL
+);
+
+
+ALTER TABLE public.login OWNER TO gorniak;
+
+--
+-- Name: login_id_seq; Type: SEQUENCE; Schema: public; Owner: gorniak
+--
+
+CREATE SEQUENCE public.login_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.login_id_seq OWNER TO gorniak;
+
+--
+-- Name: login_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gorniak
+--
+
+ALTER SEQUENCE public.login_id_seq OWNED BY public.login.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: gorniak
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    email text NOT NULL,
+    ready4bro boolean DEFAULT false,
+    joined timestamp without time zone NOT NULL,
+    name character varying(100)
+);
+
+
+ALTER TABLE public.users OWNER TO gorniak;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: gorniak
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO gorniak;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gorniak
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: login id; Type: DEFAULT; Schema: public; Owner: gorniak
+--
+
+ALTER TABLE ONLY public.login ALTER COLUMN id SET DEFAULT nextval('public.login_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: gorniak
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: lastbro; Type: TABLE DATA; Schema: public; Owner: gorniak
+--
+
+COPY public.lastbro ("time") FROM stdin;
+2019-01-23 16:24:39.942906
+\.
+
+
+--
+-- Data for Name: login; Type: TABLE DATA; Schema: public; Owner: gorniak
+--
+
+COPY public.login (id, hash, email) FROM stdin;
+1	test	test@test.com
+2	$2a$10$8jDAhLCqD.6MppOq2b5IyekI5.9oIJfRueKL7a./4ShOzoB.V9oFe	ann@email.com
+13	$2a$10$CVWJyPYickxUBR3IpWTV.Ol3vwYx9Ldsg.GiDMeLJp52H.SmP0mW.	ann2@email.com
+16	$2a$10$dR5jgPGk26/H834qQFgHyObzGK.Ei00s7OPLC0OAIi/.gvKGQ9/2G	ann4@email.com
+17	$2a$10$34H0uwgJ6qsxYcyz9ZVVh.rkXtwR6YWR5GFhz11acMoiwzc325RLm	a@a.pl
+19	$2a$10$IMSW5xvH9/9VeQpHXsOHsuBhVcTdzIwLyZ.cE2E2e6eeBLadlGpju	test@email.pl
+21	$2a$10$YMQkj2sz7pSx1MDC2gugjeSvIdUwQlEaybBEbW2pziMyWbTy8TEvW	a1@a.pl
+22	$2a$10$bBrwIO2x8OdeNcJzu0W/U.GPUyRJMpes0Lnr0mO4OWscm11M5yq9S	ala2@test.pl
+23	$2a$10$XQV4IUmp30hDaOZfBTSw2edC5/990syejucV38fqFdX1wgYKNQ0.C	ala3@test.pl
+24	$2a$10$uxtryCgPtTztGJ4UGZtCbuoBx5hzINBMQ3owf8sk.rT/6xZQ0yu26	a3@test.pl
+25	$2a$10$7RH5w6726NY0npq4B.iT3uw5tauD.y/cYhmAT2uwyDE6kZYxXLwV.	a4@test.pl
+26	$2a$10$bw3.f2EoWF7AzYYcCz3hyuDcbN2nSzduPsJy3hs2Jz5zRJB.U0Peq	a5@test5.pl
+27	$2a$10$It.pR0FOkKZgbT4BsiD/1OKasprd0ZaMh5nHqmXyR3ZzeX3I.47zG	a2@test.pl
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: gorniak
+--
+
+COPY public.users (id, email, ready4bro, joined, name) FROM stdin;
+2	ann2@email.com	f	2019-01-03 16:10:08.055	Ann2
+3	ann4@email.com	f	2019-01-04 16:53:17.761	Ann4
+5	test@email.pl	f	2019-01-08 21:59:25.226	test2
+4	a@a.pl	f	2019-01-08 16:14:44.536	a
+10	ala2@test.pl	f	2019-01-17 15:40:26.085	ala2
+11	ala3@test.pl	f	2019-01-17 15:41:32.586	ala3
+13	a4@test.pl	f	2019-01-17 16:05:36.208	a4
+14	a5@test5.pl	f	2019-01-17 16:06:14.735	a5
+12	a3@test.pl	f	2019-01-17 16:03:45.756	a3
+15	a2@test.pl	f	2019-01-17 16:06:55.819	a2
+6	a1@a.pl	t	2019-01-09 15:58:50.614	ala
+\.
+
+
+--
+-- Name: login_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gorniak
+--
+
+SELECT pg_catalog.setval('public.login_id_seq', 28, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gorniak
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 15, true);
+
+
+--
+-- Name: login login_email_key; Type: CONSTRAINT; Schema: public; Owner: gorniak
+--
+
+ALTER TABLE ONLY public.login
+    ADD CONSTRAINT login_email_key UNIQUE (email);
+
+
+--
+-- Name: login login_pkey; Type: CONSTRAINT; Schema: public; Owner: gorniak
+--
+
+ALTER TABLE ONLY public.login
+    ADD CONSTRAINT login_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: gorniak
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: gorniak
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
