@@ -111,14 +111,21 @@ app.post ('/register', (req, res) =>{
 })
 
 app.post('/ready4bro', (req, res) =>{
-  User.setBroReady(req.session.user.id)
-  .then(result => {
-    if (result === 1) {
-      res.status(200).json('ok')
-    }else {
-      res.status(400).json('Somthing is wrong ? help me !')
-    }
-  })
+  if (req.user === undefined){ 
+    res.status(401).json('ACHTUNG ! obcy')
+  }else {
+    User.setBroReady(req.session.user.id)
+    .then(result => {
+      if (result === 1) {
+        database.checkTeamReady();
+        res.status(200).json('ok')
+      }else { 
+        res.status(400).json('Somthing is wrong ? help me !')
+      }
+    })
+  }
+
+  
   
 })
 
