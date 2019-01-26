@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const User = require ('./models/User');
 const database = require('./models/Database');
 const session = require('express-session'); 
+const Mailer = require('./models/Mailer')
 
 
 const corsOptions = {
@@ -117,12 +118,18 @@ app.post('/ready4bro', (req, res) =>{
     User.setBroReady(req.session.user.id)
     .then(result => {
       if (result === 1) {
-        database.checkTeamReady();
         res.status(200).json('ok')
+        database.checkTeamReady().then(ans => {
+         // console.log(ans)
+        //  ans ? console.log('Wysylam maila bzz bzzz'): console.log('nie wysylam maila')
+        })
       }else { 
         res.status(400).json('Somthing is wrong ? help me !')
       }
     })
+
+    
+  
   }
 
   

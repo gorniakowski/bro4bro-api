@@ -33,7 +33,18 @@ module.exports.clockReset = function () {
         .then(trx.commit)
         .catch(trx.rollback)   
     })
+
+module.exports.checkTeamReady =  function() {
     
+    return module.exports.getAllReady4Bro().then(res=>{
+        if (res.length >=3) {
+           return true
+        }else {
+            return false
+        }
+
+    })
+}  
 
 
     return db('lastbro')
