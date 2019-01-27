@@ -120,8 +120,10 @@ app.post('/ready4bro', (req, res) =>{
       if (result === 1) {
         res.status(200).json('ok')
         database.checkTeamReady().then(ans => {
+
          // console.log(ans)
         //  ans ? console.log('Wysylam maila bzz bzzz'): console.log('nie wysylam maila')
+        Mailer.sender().then(a => console.log(a))
         })
       }else { 
         res.status(400).json('Somthing is wrong ? help me !')

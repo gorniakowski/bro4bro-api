@@ -17,8 +17,14 @@ module.exports = db
 module.exports.getAllReady4Bro = async function () {
 
     return await db.select('name').from('users')
-    .where('ready4bro','=', true)
+        .where('ready4bro','=', true)
 } 
+
+module.exports.getAllReady4BroEmail = async function () {
+    
+    return await db.select('email').from('users')
+        .where('ready4bro', '=', true)
+}
 
 module.exports.clockReset = function () {
     
