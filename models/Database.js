@@ -36,14 +36,27 @@ module.exports.clockReset = function () {
             .from('users')
             .where('ready4bro','=', true)
             .update({ready4bro: false})
+
+        trx.update({messagesend: false})
+        .into('message')
+
         .then(trx.commit)
         .catch(trx.rollback)   
     })
 
+
+module.exports.messageSent = function() {
+    return db('message').update({messagesend: true})
+}
+
+module.exports.checkMessageSent = function () {
+    db.select('messagesend').from('message')
+}
+
 module.exports.checkTeamReady =  function() {
     
     return module.exports.getAllReady4Bro().then(res=>{
-        if (res.length >=3) {
+        if (res.length >=1) {
            return true
         }else {
             return false

@@ -30,7 +30,6 @@ async function main(){
     module.exports.sender = async function () {
       let users = await database.getAllReady4BroEmail()
       users = users.map(ans => ans.email);
-      console.log(users)
       mailOptions.to = users.join(',');
      
       return  await transporter.sendMail(mailOptions)

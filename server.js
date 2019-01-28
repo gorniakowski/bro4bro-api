@@ -111,6 +111,12 @@ app.post ('/register', (req, res) =>{
   
 })
 
+app.get ('/messageSent?', (req, res) =>{
+  if (req.user === undefined){
+    
+  }
+})
+
 app.post('/ready4bro', (req, res) =>{
   if (req.user === undefined){ 
     res.status(401).json('ACHTUNG ! obcy')
@@ -120,10 +126,14 @@ app.post('/ready4bro', (req, res) =>{
       if (result === 1) {
         res.status(200).json('ok')
         database.checkTeamReady().then(ans => {
-
-         // console.log(ans)
-        //  ans ? console.log('Wysylam maila bzz bzzz'): console.log('nie wysylam maila')
-        Mailer.sender().then(a => console.log(a))
+          if (ans) {
+            Mailer.sender().then(a => {
+              if (a) {
+                database.messageSent().then( b => b)
+                                      .catch(err => console.log(err))
+              }
+            })
+          }      
         })
       }else { 
         res.status(400).json('Somthing is wrong ? help me !')
