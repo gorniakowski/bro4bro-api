@@ -113,7 +113,10 @@ app.post ('/register', (req, res) =>{
 
 app.get ('/messageSent?', (req, res) =>{
   if (req.user === undefined){
-    
+    res.status(401).json('ACHTUNG! obcy')
+  }else{
+
+    console.log(database.checkMessageSent())
   }
 })
 

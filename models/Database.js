@@ -28,7 +28,7 @@ module.exports.getAllReady4BroEmail = async function () {
 
 module.exports.clockReset = function () {
     
-    db.transaction(trx => {
+     return db.transaction(trx => {
         trx.update({time:db.fn.now()})
         .into('lastbro')
         
@@ -43,6 +43,8 @@ module.exports.clockReset = function () {
         .then(trx.commit)
         .catch(trx.rollback)   
     })
+
+}
 
 
 module.exports.messageSent = function() {
@@ -66,10 +68,3 @@ module.exports.checkTeamReady =  function() {
 }  
 
 
-    return db('lastbro')
-
-            .update({time: db.fn.now()})
-
-
-
-}
