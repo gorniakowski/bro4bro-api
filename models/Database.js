@@ -28,21 +28,19 @@ module.exports.getAllReady4BroEmail = async function () {
 
 module.exports.clockReset = function () {
     
-     return db.transaction(trx => {
-        trx.update({time:db.fn.now()})
-        .into('lastbro')
-        
-        trx.select('*')
-            .from('users')
-            .where('ready4bro','=', true)
-            .update({ready4bro: false})
-
-        trx.update({messagesend: false})
-        .into('message')
-
-        .then(trx.commit)
-        .catch(trx.rollback)   
-    })
+    return db.update({time:db.fn.now()})
+            .into('lastbro')
+            .then(a => {
+                return db.select('*')
+                .from('users')
+                .where('ready4bro','=', true)
+                .update({ready4bro: false})
+                
+            })
+            .then(b => console.log(b))
+            
+    
+   
 
 }
 
@@ -52,7 +50,7 @@ module.exports.messageSent = function() {
 }
 
 module.exports.checkMessageSent = function () {
-    db.select('messagesend').from('message')
+    return db.select('messagesend').from('message')
 }
 
 module.exports.checkTeamReady =  function() {

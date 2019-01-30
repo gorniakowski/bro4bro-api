@@ -115,8 +115,17 @@ app.get ('/messageSent?', (req, res) =>{
   if (req.user === undefined){
     res.status(401).json('ACHTUNG! obcy')
   }else{
+    database.checkMessageSent().then(ans => {
+     // console.log(ans)
+      if(ans[0].messagesend === true){
+        res.status(200).json('yes')
+      }else {
+        res.status(201).json('no')
+      }
+    })
+    
 
-    console.log(database.checkMessageSent())
+  
   }
 })
 
@@ -155,7 +164,7 @@ app.post('/clockreset', (req, res) => {
     if(req.user){
       database.clockReset()
       .then(result => {
-       // console.log(result)
+        console.log(result)
         if (result ===1){
           res.status(200).json('OK')
         }else {
