@@ -37,7 +37,9 @@ module.exports.clockReset = function () {
                 .update({ready4bro: false})
                 
             })
-            .then(b => console.log(b))
+            .then(b => {
+                return db('message').update({messagesend: false})
+            } )
             
     
    
