@@ -7,7 +7,9 @@ const bodyParser = require('body-parser');
 const User = require ('./models/User');
 const database = require('./models/Database');
 const session = require('express-session'); 
-const Mailer = require('./models/Mailer')
+const Mailer = require('./models/Mailer');
+const fileUpload = require('express-fileupload');
+
 
 
 const corsOptions = {
@@ -62,6 +64,7 @@ app.use(session({ secret: 'kotek',
                 }));
 
 app.use(cors(corsOptions));
+app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -164,7 +167,7 @@ app.post('/clockreset', (req, res) => {
     if(req.user){
       database.clockReset()
       .then(result => {
-        console.log(result)
+        //console.log(result)
         if (result ===1){
           res.status(200).json('OK')
         }else {
@@ -178,10 +181,17 @@ app.post('/clockreset', (req, res) => {
 
 })
 
+app.post('/upload', (req, res) => {
+  console.log(req);
+})
+
+
 app.post('/logout', (req, res) => {
   req.session.destroy();
   res.status(200).json('OK')
 })
+
+
 
 
 app.listen (3000, () =>{
